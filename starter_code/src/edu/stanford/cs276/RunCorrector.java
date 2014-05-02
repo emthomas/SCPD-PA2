@@ -77,8 +77,8 @@ public class RunCorrector {
 		else if (args.length == 4) {
 			uniformOrEmpirical = args[0];
 			queryFilePath = args[1];
-			extra = args[2];
-			goldFilePath = args[3];
+			extra = args[3];
+			goldFilePath = args[2];
 		}
 		else {
 			System.err.println(
@@ -99,7 +99,7 @@ public class RunCorrector {
 		}
 		
 		if ("extra".equals(extra)) {
-			System.out.println("Loading Expanded edit model......");
+			//System.out.println("Loading Expanded edit model......");
 			commonSpellingErrorModel = true;
 			//commonSpellingErrorsFileReader = new BufferedReader(new FileReader(new File(extra)));
 			commonSpellingErrorsFileReader = new BufferedReader(new FileReader(new File("./data/commonspellingerrors.txt")));
@@ -122,7 +122,7 @@ public class RunCorrector {
 		nsm.setProbabilityType(uniformOrEmpirical);
 		BufferedReader queriesFileReader = new BufferedReader(new FileReader(new File(queryFilePath)));
 		//String output = "/Users/ethomas35/SCPD/PA2";
-		String output = "/Users/gupsumit/dev/Stanford/cs276/pa/pa2_git/SCPD-PA2";
+		//String output = "/Users/gupsumit/dev/Stanford/cs276/pa/pa2_git/SCPD-PA2";
 		//BufferedWriter edits2Writer = new BufferedWriter(new FileWriter(new File(output, "experiments.txt")));
 		for(double x = 0.25; x<=0.25; x+=0.1)
 		{
@@ -203,6 +203,7 @@ public class RunCorrector {
 			}
 			
 
+			System.out.println(correctedQuery);
 			// If a gold file was provided, compare our correction to the gold correction
 			// and output the running accuracy
 			if (goldFileReader != null) {
@@ -223,13 +224,16 @@ public class RunCorrector {
 				totalCount++;
 			}
 		}
-		queriesFileReader.close();
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		System.out.println("RUNNING TIME: "+totalTime/1000+" seconds ");
-		System.out.println("Total Query matched = "+yourCorrectCount);
-		System.out.println("score: "+score+"\tepsilon: "+((double)Math.round(epsilon*100))/100+"\t"+"lambda: "+((double)Math.round(lambda*100))/100+"\t"+"uniProb: "+((double)Math.round(uniProb*100))/100+"\t"+(100*yourCorrectCount/totalCount)+"%");
-		//edits2Writer.write("epsilon: "+((double)Math.round(epsilon*100))/100+"\t"+"lambda: "+((double)Math.round(lambda*100))/100+"\t"+"uniProb: "+((double)Math.round(uniProb*100))/100+"\t"+(100*yourCorrectCount/totalCount)+"%\n");
+			queriesFileReader.close();
+			long endTime   = System.currentTimeMillis();
+			long totalTime = endTime - startTime;
+			//System.out.println("RUNNING TIME: "+totalTime/1000+" seconds ");
+		
+			if (goldFileReader != null) {
+				System.out.println("Total Query matched = "+yourCorrectCount);
+				System.out.println("score: "+score+"\tepsilon: "+((double)Math.round(epsilon*100))/100+"\t"+"lambda: "+((double)Math.round(lambda*100))/100+"\t"+"uniProb: "+((double)Math.round(uniProb*100))/100+"\t"+(100*yourCorrectCount/totalCount)+"%");
+				//edits2Writer.write("epsilon: "+((double)Math.round(epsilon*100))/100+"\t"+"lambda: "+((double)Math.round(lambda*100))/100+"\t"+"uniProb: "+((double)Math.round(uniProb*100))/100+"\t"+(100*yourCorrectCount/totalCount)+"%\n");
+			}
 		}
 	   }
 	  }
